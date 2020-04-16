@@ -13,7 +13,7 @@ chip8::chip8(const screen &s) :
 	sp {0}, 
 	stack(STACK_SIZE, 0),
 	dt {0},
-	st {0},
+	st {0}
 {
 	// Load in fontset into memory
 	for (unsigned int i = 0; i < NUM_FONTS; i++) {

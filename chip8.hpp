@@ -1,3 +1,4 @@
+#include <vector>
 #include "screen.hpp"
 
 /*
@@ -10,19 +11,23 @@ private:
 	unsigned short opcode;
 
 	// 4K memory
-	std::vector<unsigned char> memory(4096);
+	std::vector<unsigned char> memory;
 
 	// 16 8-bit registers
-	std::vector<unsigned char> v(16);
+	std::vector<unsigned char> v;
 
 	// Index register and program counter
-	unsigned short I;
+	unsigned short i;
 	unsigned short pc;
 
 	// Stack pointer and execution stack
 	unsigned short sp;
-	std::vector<unsigned short> stack(16);
+	std::vector<unsigned short> stack;
+
+	// Delay and sound 60 Hz timer registers
+	unsigned char dt;
+	unsigned char st;
 public:
-	chip8(screen&);
-	void execute();
-}
+	chip8(const screen&);
+	void executeCycle();
+};

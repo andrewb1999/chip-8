@@ -16,4 +16,4 @@ screen.o: screen.hpp
 	$(CXX) $(CXXFLAGS) -c screen.cpp
 
 clean: 
-	rm -f main.o chip8.o screen.o
+	rm -f main.o chip8.o screen.o main

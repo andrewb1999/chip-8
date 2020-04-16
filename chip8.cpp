@@ -8,7 +8,7 @@ chip8::chip8(const screen &s) :
 	opcode {0},
 	memory(MEMORY_SIZE, 0), 
 	v(NUM_REGISTERS, 0), 
-	i {0},	
+	I {0},	
 	pc {START_PC},
 	sp {0}, 
 	stack(STACK_SIZE, 0),
@@ -82,7 +82,7 @@ void chip8::call()
 	pc = opcode & 0x0FFFu;
 }
 
-// Conditional skip next instruction (equal to value)
+// Skip next instruction (equal to value)
 void chip8::seVal()
 {
 	unsigned short x = (opcode & 0x0F00u) >> 8u;
@@ -93,7 +93,7 @@ void chip8::seVal()
 	}
 }
 
-// Conditional skip next instruction (not equal to value)
+// Skip next instruction (not equal to value)
 void chip8::sneVal()
 {
 	unsigned short x = (opcode & 0x0F00u) >> 8u;
@@ -104,7 +104,7 @@ void chip8::sneVal()
 	}
 }
 
-// Conditional skip next instruction (equal regs)
+// Skip next instruction (equal regs)
 void chip8::seReg()
 {
 	unsigned short x = (opcode & 0x0F00u) >> 8u;
@@ -215,7 +215,7 @@ void chip8::shlReg()
 	v[x] <<= 1;
 }
 
-// Conditional skip next instruction (not equal regs)
+// Skip next instruction (not equal regs)
 void chip8::sneReg()
 {
 	unsigned short x = (opcode & 0x0F00u) >> 8u;
@@ -224,4 +224,16 @@ void chip8::sneReg()
 	if (v[x] != v[y]) {
 		pc += 2;
 	}
+}
+
+// Load value into index register
+void ldI() 
+{
+	I = opcode & 0x0FFFu;
+}
+
+// Jump to location offset by register value V0
+void jpReg()
+{
+	pc = (opcode & 0x0FFFu) + v[0];
 }

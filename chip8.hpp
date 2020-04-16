@@ -49,7 +49,7 @@ private:
 	std::vector<unsigned char> v;
 
 	// Index register and program counter
-	unsigned short i;
+	unsigned short I;
 	unsigned short pc;
 
 	// Stack pointer and execution stack
@@ -81,13 +81,13 @@ public:
 	// Call subroutine
 	void call();
 
-	// Conditional skip next instruction (equal to value)
+	// Skip next instruction (equal to value)
 	void seVal();
 
-	// Conditional skip next instruction (not equal to value)
+	// Skip next instruction (not equal to value)
 	void sneVal();
 
-	// Conditional skip next instruction (equal regs)
+	// Skip next instruction (equal regs)
 	void seReg();
 
 	// Load value into register
@@ -123,6 +123,12 @@ public:
 	// Shift bits of a register left 1
 	void shlReg();
 
-	// Conditional skip next instruction (not equal regs)
+	// Skip next instruction (not equal regs)
 	void sneReg();
+
+	// Load value into index register
+	void ldI();
+
+	// Jump to location offset by register value V0
+	void jpReg();
 };

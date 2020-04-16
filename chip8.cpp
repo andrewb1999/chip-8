@@ -227,13 +227,13 @@ void chip8::sneReg()
 }
 
 // Load value into index register
-void ldI() 
+void chip8::ldI() 
 {
 	I = opcode & 0x0FFFu;
 }
 
 // Jump to location offset by register value V0
-void jpReg()
+void chip8::jpReg()
 {
 	pc = (opcode & 0x0FFFu) + v[0];
 }

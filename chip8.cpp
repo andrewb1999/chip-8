@@ -82,13 +82,146 @@ void chip8::call()
 	pc = opcode & 0x0FFFu;
 }
 
-// Conditional skip next instruction
-void chip8::se()
+// Conditional skip next instruction (equal to value)
+void chip8::seVal()
 {
 	unsigned short x = (opcode & 0x0F00u) >> 8u;
-	unsigned short byte = opcode & 0x00FFu;
+	unsigned short kk = opcode & 0x00FFu;
 
-	if (v[x] == byte) {
+	if (v[x] == kk) {
+		pc += 2;
+	}
+}
+
+// Conditional skip next instruction (not equal to value)
+void chip8::sneVal()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short kk = opcode & 0x00FFu;
+
+	if (v[x] != kk) {
+		pc += 2;
+	}
+}
+
+// Conditional skip next instruction (equal regs)
+void chip8::seReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	if (v[x] == v[y]) {
+		pc += 2;
+	}
+}
+
+// Load value into register 
+void chip8::ldVal()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short kk = opcode & 0x00FFu;
+
+	v[x] = kk;
+}
+
+// Add value to register
+void chip8::addVal()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short kk = opcode & 0x00FFu;
+
+	v[x] += kk;	
+}
+
+// Load register value into another register
+void chip8::ldReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	v[x] = v[y];
+}
+
+// Or register with another register
+void chip8::orReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	v[x] |= v[y];
+}
+
+// And register with another register
+void chip8::andReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	v[x] &= v[y];
+}
+
+// Xor register with another register
+void chip8::xorReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	v[x] ^= v[y];	
+}
+
+// Add register with another register
+void chip8::addReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	unsigned short sum = v[x] + v[y];
+	v[0xF] = (sum > 0x00FFu);
+	v[x] = sum & 0x00FFu;
+}
+
+// Subtract a register value
+void chip8::subReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	v[0xF] = (v[x] > v[y]);
+	v[x] -= v[y];
+}
+
+// Shift bits of a register right 1
+void chip8::shrReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	v[0xF] = v[x] & 0x1u;
+	v[x] >>= 1;
+}
+
+// Subtract this register from another one
+void chip8::subnReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;	
+	v[0xF] = (v[y] > v[x]);
+	v[x] = v[y] - v[x];
+}
+
+// Shift bits of a register left 1
+void chip8::shlReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	v[0xF] = v[x] >> 7u;
+	v[x] <<= 1;
+}
+
+// Conditional skip next instruction (not equal regs)
+void chip8::sneReg()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short y = (opcode & 0x00F0u) >> 4u;
+
+	if (v[x] != v[y]) {
 		pc += 2;
 	}
 }

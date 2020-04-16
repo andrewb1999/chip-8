@@ -81,6 +81,48 @@ public:
 	// Call subroutine
 	void call();
 
-	// Conditional skip next instruction
-	void se();
+	// Conditional skip next instruction (equal to value)
+	void seVal();
+
+	// Conditional skip next instruction (not equal to value)
+	void sneVal();
+
+	// Conditional skip next instruction (equal regs)
+	void seReg();
+
+	// Load value into register
+	void ldVal();
+
+	// Add value to register
+	void addVal();
+
+	// Load register value into another register
+	void ldReg();
+
+	// Or register with another register
+	void orReg();
+
+	// And register with another register
+	void andReg();
+
+	// Xor register with another register
+	void xorReg();
+
+	// Add register with another register
+	void addReg();
+
+	// Subtract a register from this register
+	void subReg();
+
+	// Shift bits of a register right 1
+	void shrReg();
+
+	// Subtract this register from another one
+	void subnReg();
+
+	// Shift bits of a register left 1
+	void shlReg();
+
+	// Conditional skip next instruction (not equal regs)
+	void sneReg();
 };

@@ -13,18 +13,22 @@ chip8::chip8(const screen &s) :
 	sp {0}, 
 	stack(STACK_SIZE, 0),
 	dt {0},
-	st {0}
+	st {0},
+	keys(NUM_KEYS, 0)
 {
 	// Load in fontset into memory
 	for (unsigned int i = 0; i < NUM_FONTS; i++) {
 		memory[FONTSET_START + i] = fontset[i];
 	}
+
+	// Seed rng
+	srand(time(0));
 }
 
 // Execute one cycle of cpu
 void chip8::executeCycle()
 {
-	opcode = (memory[pc] << 8) | memory[pc + 1];
+	opcode = (memory[pc] << 8u) | memory[pc + 1];
 
 	if (dt > 0) {
 		dt--;
@@ -32,7 +36,7 @@ void chip8::executeCycle()
 
 	if (st > 0) {
 		if (st == 1) {
-			// Do something with sound
+			// TODO: Do something with sound
 		}
 		st--;
 	}
@@ -236,4 +240,132 @@ void chip8::ldI()
 void chip8::jpReg()
 {
 	pc = (opcode & 0x0FFFu) + v[0];
+}
+
+// And random byte with value
+void chip8::rnd()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+	unsigned short kk = opcode & 0x00FFu;
+
+	v[x] = (rand() % 256) & kk;
+}
+
+// Draw sprite to screen
+void chip8::drw()
+{
+	// TODO
+}
+
+// Skip next instruction (key pressed)
+void chip8::skp() 
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	if (keys[v[x]]) {
+		pc += 2;
+	}
+}
+
+// Skip next instruction (key not pressed)
+void chip8::sknp() 
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	if (!keys[v[x]]) {
+		pc += 2;
+	}
+}
+
+// Load delay timer into register
+void chip8::ldDt()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	v[x] = dt;
+}
+
+// Wait for key press, store value into register
+void chip8::ldKey()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	unsigned int keyPressed = 0;
+	for (unsigned int i = 0; i < NUM_KEYS; i++) {
+		if (keys[i]) {
+			v[x] = 0;
+			keyPressed = 1;
+			break;
+		}
+	}
+
+	if (!keyPressed) {
+		pc -= 2;
+	}
+}
+
+// Load register into delay timer
+void chip8::dtLd() 
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	dt = v[x];
+}
+
+// Load register into sound timer
+void chip8::stLd()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	st = v[x];
+}
+
+// Add I with a register
+void chip8::Iadd()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	I += v[x];
+}
+
+// Set I to be location of sprite
+void chip8::Ild()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	I = FONTSET_START + (v[x] * SPRITE_BYTES);
+}
+
+// Set I, I+1, and I+2 in memory to be BCD representation of a register
+void chip8::Ildbcd()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	int n = v[x];
+
+	for (unsigned short i = 0; i <= 2; i++) {
+		unsigned short j = 2 - i;
+		memory[I + j] = n % 10;
+		n /= 10;
+	}
+}
+
+// Store the values of registers v[0]...v[x] into memory
+void chip8::strRegs()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	for (unsigned short i = 0; i <= x; i++) {
+		memory[I + i] = v[i];
+	}
+}
+
+// Load values from memory into registers v[0]...v[x]
+void chip8::ldRegs()
+{
+	unsigned short x = (opcode & 0x0F00u) >> 8u;
+
+	for (unsigned short i = 0; i <= x; i++) {
+		v[i] = memory[I + i];
+	}
 }

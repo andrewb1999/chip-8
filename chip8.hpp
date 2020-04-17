@@ -17,6 +17,8 @@ private:
 	const unsigned int STACK_SIZE = 16;
 	const unsigned int NUM_FONTS = 80;
 	const unsigned int FONTSET_START = 0x50;
+	const unsigned int NUM_KEYS = 16;
+	const unsigned int SPRITE_BYTES = 5;
 
 	// Fontset
 	unsigned char fontset[80] =
@@ -59,6 +61,9 @@ private:
 	// Delay and sound timer registers
 	unsigned char dt;
 	unsigned char st;
+
+	// Keypad
+	std::vector<unsigned char> keys;
 public:
 	// Initialize cpu
 	chip8(const screen&);
@@ -131,4 +136,43 @@ public:
 
 	// Jump to location offset by register value V0
 	void jpReg();
+
+	// And random byte with value
+	void rnd();
+
+	// Draw sprite to screen
+	void drw();
+
+	// Skip next instruction (key pressed)
+	void skp();
+
+	// Skip next instruction (key not pressed)
+	void sknp();
+
+	// Load delay timer into register
+	void ldDt();
+
+	// Wait for key press, store value into register
+	void ldKey();
+
+	// Load register into delay timer
+	void dtLd();
+
+	// Load register into sound timer
+	void stLd();
+
+	// Add I with a register
+	void Iadd();
+
+	// Set I to be location of sprite from a register
+	void Ild();
+
+	// Set I, I+1, and I+2 in memory to be BCD representation of a register
+	void Ildbcd();
+
+	// Store the values of registers v[0]...v[x] into memory
+	void strRegs();
+
+	// Load values from memory into registers v[0]...v[x]
+	void ldRegs();
 };

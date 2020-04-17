@@ -1,2 +1,10 @@
 # project-cis190_andrew_jonathan
-project-cis190_andrew_jonathan created by GitHub Classroom
+CHIP8 Emulator Using SFML For Graphics
+
+Requires installing sfml
+```
+####Ubuntu
+sudo apt-get install libsfml-dev
+
+####Arch
+sudo pacman -S sfml

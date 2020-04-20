@@ -57,6 +57,9 @@ private:
 	// Stack pointer and execution stack
 	unsigned short sp;
 	std::vector<unsigned short> stack;
+    
+    // Screen
+    screen disp;
 
 	// Delay and sound timer registers
 	unsigned char dt;
@@ -66,7 +69,7 @@ private:
 	std::vector<unsigned char> keys;
 public:
 	// Initialize cpu
-	chip8(const screen&);
+	chip8();
 
 	// Execute one cycle of cpu
 	void executeCycle();

@@ -4,7 +4,7 @@
 #include "chip8.hpp"
 
 // Initialize cpu
-chip8::chip8(const screen &s) :
+chip8::chip8() :
 	opcode {0},
 	memory(MEMORY_SIZE, 0), 
 	v(NUM_REGISTERS, 0), 
@@ -14,7 +14,8 @@ chip8::chip8(const screen &s) :
 	stack(STACK_SIZE, 0),
 	dt {0},
 	st {0},
-	keys(NUM_KEYS, 0)
+	keys(NUM_KEYS, 0),
+    disp()
 {
 	// Load in fontset into memory
 	for (unsigned int i = 0; i < NUM_FONTS; i++) {
@@ -62,7 +63,7 @@ void chip8::readRom(const std::string &filename)
 // Clears the screen
 void chip8::cls()
 {
-	// TODO
+    disp.disp_clear();
 }
 
 // Return from subroutine
@@ -254,7 +255,14 @@ void chip8::rnd()
 // Draw sprite to screen
 void chip8::drw()
 {
-	// TODO
+    unsigned short vx = (opcode & 0x0F00u) >> 8u;
+    unsigned short vy = (opcode & 0x00F0u) >> 4u;
+    unsigned short n = (opcode & 0x000Fu);
+
+    auto begin = memory.begin() + I;
+    auto end = begin + n + 1;
+    sprite s {begin, end};
+	disp.draw(s, vx, vy, n, v[15]);
 }
 
 // Skip next instruction (key pressed)

@@ -58,15 +58,16 @@ private:
 	unsigned short sp;
 	std::vector<unsigned short> stack;
     
-    // Screen
-    screen disp;
-
 	// Delay and sound timer registers
 	unsigned char dt;
 	unsigned char st;
 
 	// Keypad
 	std::vector<unsigned char> keys;
+
+    // Screen
+    screen disp;
+
 public:
 	// Initialize cpu
 	chip8();

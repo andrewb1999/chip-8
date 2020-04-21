@@ -15,3 +15,4 @@ sprite::sprite(vector<unsigned char>::iterator first, vector<unsigned char>::ite
 std::vector<sf::Uint8> const & sprite::get_row(const int row) {
     return spr[row];
 }
+

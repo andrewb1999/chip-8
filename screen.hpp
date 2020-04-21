@@ -3,6 +3,7 @@
 */
 #include <SFML/Config.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <vector>
 #include "sprite.hpp"
 
@@ -12,10 +13,13 @@ class screen
         screen();
         void disp_clear();
         void update_disp();
-        void draw(const sprite &, unsigned char vx, unsigned char vy, 
-                unsigned int n, unsigned char vf);
+        void draw(sprite &, unsigned char vx, unsigned char vy, 
+                unsigned int n, unsigned char & vf);
     private:
+        std::vector<std::vector<bool>> display;
         sf::RenderWindow window;
         sf::View view;
-        std::vector<std::vector<sf::Uint8>> display;
+        sf::Texture texture;
+        const int x_size = 64;
+        const int y_size = 32;
 };

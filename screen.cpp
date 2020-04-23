@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "screen.hpp"
+#include <iostream>
 
 using namespace std;
 
@@ -34,13 +35,15 @@ sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
     return view;
 }
 
-screen::screen() : display {64, vector<bool>(32)}, 
-                   window {sf::VideoMode(64*10, 32*10), "CHIP-8 Emulator", 
+screen::screen() : display {y_size, vector<bool>(x_size)}, 
+                   window {sf::VideoMode(x_size, y_size), "CHIP-8 Emulator", 
                    (sf::Style::Resize + sf::Style::Close)} 
 {
-    view.setSize(x_size*10, y_size*10);
+    view.setSize(x_size, y_size);
     view.setCenter(view.getSize().x / 2, view.getSize().y / 2);
     view = getLetterboxView(view, x_size, y_size);
+    sf::Vector2u size {x_size*40, y_size*40};
+    window.setSize(size);
 }
 
 
@@ -54,15 +57,13 @@ void screen::update_disp() {
     sf::Uint8 pixels[x_size*y_size*4];
     texture.create(x_size, y_size);
     sf::Sprite sprite(texture);
-    for (int i = 0; i < y_size; i++) {
-       for (int j = 0; j < x_size; j++) {
-           pixels[j + y_size] = display[i][j] ? 255 : 0;
-           pixels[j + (y_size + i)] = display[i][j] ? 255 : 0;
-           pixels[j + (y_size + (2 * i))] = display[i][j] ? 255 : 0;
-           pixels[j + (y_size + (3 * i))] = 255;
-       }
-    }
-    
+
+	for(unsigned int i = 0; i < x_size*y_size*4; i += 4) {
+        unsigned int y = i / (x_size*4);
+        unsigned int x = (i-(y*x_size*4))/4;
+		pixels[i] = display[y][x] ? 255 : 0;
+	}
+
     texture.update(pixels);
 
 
@@ -80,18 +81,26 @@ void screen::update_disp() {
     window.clear();
     window.draw(sprite);
     window.display();
+/*
+    for (auto &v : display) {   
+        for (bool i : v) {
+                cout << i;
+        }
+        cout << endl;
+    }
+    */
+//    cout << endl;
     
 }
 
 void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
                   unsigned int n, unsigned char & vf) {
-    
-    for (unsigned int i = vy; i < vy + n; i++) {
-        auto row = s.get_row(i - vy);
-        for (unsigned int j = vx; j < (vx + 8u); j++) {
-            bool temp = display[i][j];
-            display[i][j] = display[i][j] ^ row[j - vx];
-            vf &= (temp != display[i][j]);
+    for (unsigned int y = vy; y < vy + n; y++) {
+        auto row = s.get_row(y - vy);
+        for (unsigned int x = vx; x < (vx + 8u); x++) {
+            bool temp = display[y][x];
+            display[y][x] = display[y][x] ^ row[x - vx];
+            vf &= (temp != display[y][x]);
         }
     }
 }

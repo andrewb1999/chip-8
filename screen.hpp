@@ -16,10 +16,10 @@ class screen
         void draw(sprite &, unsigned char vx, unsigned char vy, 
                 unsigned int n, unsigned char & vf);
     private:
+        const unsigned int x_size = 64;
+        const unsigned int y_size = 32;
         std::vector<std::vector<bool>> display;
         sf::RenderWindow window;
         sf::View view;
         sf::Texture texture;
-        const int x_size = 64;
-        const int y_size = 32;
 };

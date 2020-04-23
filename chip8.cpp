@@ -36,6 +36,7 @@ void chip8::executeCycle()
 	opcode = (memory[pc] << 8u) | memory[pc + 1];
 
 	executeInsn(opcode);
+    disp.update_disp();
 
 	if (dt > 0) {
 		dt--;
@@ -427,14 +428,17 @@ void chip8::rnd()
 // Draw sprite to screen
 void chip8::drw()
 {
+    /*
     unsigned short vx = (opcode & 0x0F00u) >> 8u;
     unsigned short vy = (opcode & 0x00F0u) >> 4u;
     unsigned short n = (opcode & 0x000Fu);
-
+    
     auto begin = memory.begin() + I;
     auto end = begin + n + 1;
-    sprite s {begin, end};
-	disp.draw(s, vx, vy, n, v[15]);
+    */
+    std::vector<unsigned char> v {0xFF, 0x00, 0xFF};
+    sprite s {v.begin(), v.end()};
+	disp.draw(s, 0, 0, 3, v[15]);
 
 	pc += 2;
 }

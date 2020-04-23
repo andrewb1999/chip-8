@@ -97,6 +97,12 @@ void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
                   unsigned int n, unsigned char & vf) {
     for (unsigned int y = vy; y < vy + n; y++) {
         auto row = s.get_row(y - vy);
+        /*
+        for (bool i : row) {
+             cout << i;
+        }
+        cout << endl;
+        */
         for (unsigned int x = vx; x < (vx + 8u); x++) {
             bool temp = display[y][x];
             // cout << "(" << x << ", " << y << ") = " << (int) row[x-vx] << endl;
@@ -104,5 +110,6 @@ void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
             vf &= (temp != display[y][x]);
         }
     }
+    //cout << endl;
 }
 

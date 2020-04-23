@@ -58,7 +58,7 @@ void screen::update_disp() {
     texture.create(x_size, y_size);
     sf::Sprite sprite(texture);
 
-	for(unsigned int i = 0; i < x_size*y_size*4; i += 4) {
+	for(unsigned int i = 0; i < x_size*y_size*4; ++i) {
         unsigned int y = i / (x_size*4);
         unsigned int x = (i-(y*x_size*4))/4;
 		pixels[i] = display[y][x] ? 255 : 0;

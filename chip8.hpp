@@ -75,6 +75,12 @@ public:
 	// Execute one cycle of cpu
 	void executeCycle();
 
+	// Execute insn
+	void executeInsn(unsigned short);
+
+	// Given opcode, executes corresponding insn
+	void executeInsn();
+
 	// Read a ROM file into memory
 	void readRom(const std::string&);
 

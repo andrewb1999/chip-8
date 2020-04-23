@@ -99,6 +99,7 @@ void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
         auto row = s.get_row(y - vy);
         for (unsigned int x = vx; x < (vx + 8u); x++) {
             bool temp = display[y][x];
+            // cout << "(" << x << ", " << y << ") = " << (int) row[x-vx] << endl;
             display[y][x] = display[y][x] ^ row[x - vx];
             vf &= (temp != display[y][x]);
         }

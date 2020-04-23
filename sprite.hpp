@@ -5,7 +5,7 @@ class sprite
 {
     public:
         sprite(std::vector<unsigned char>::iterator, std::vector<unsigned char>::iterator);
-        std::vector<sf::Uint8> const & get_row(int);
+        std::vector<unsigned char> const & get_row(int);
     private:
-        std::vector<std::vector<sf::Uint8>> spr;
+        std::vector<std::vector<unsigned char>> spr;
 };

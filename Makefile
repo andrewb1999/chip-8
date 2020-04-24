@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -std=c++17 -g
 all: main
 
 main: main.o chip8.o screen.o sprite.o
-	$(CXX) $(CXXFLAGS) -o main main.o chip8.o screen.o sprite.o -lsfml-graphics -lsfml-window -lsfml-system
+	$(CXX) $(CXXFLAGS) -o main main.o chip8.o screen.o sprite.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 main.o: main.cpp chip8.hpp screen.hpp
 	$(CXX) $(CXXFLAGS) -c main.cpp

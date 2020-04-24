@@ -1,3 +1,4 @@
+#include <SFML/Audio.hpp>
 #include <chrono>
 #include <random>
 #include <string>
@@ -68,6 +69,9 @@ private:
     // Screen
     screen disp;
 
+    sf::Sound sound;
+
+    sf::SoundBuffer buffer;
 public:
 	// Initialize cpu
 	chip8();
@@ -83,6 +87,9 @@ public:
 
 	// Read a ROM file into memory
 	void readRom(const std::string&);
+
+	// Read a sound file to be played
+	void readSound(const std::string&);
 
 	// Clears the screen
 	void cls();

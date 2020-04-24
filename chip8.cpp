@@ -1,3 +1,4 @@
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <fstream>
 #include <stdlib.h>
 #include <time.h>
@@ -19,7 +20,9 @@ chip8::chip8() :
 	dt {0},
 	st {0},
 	keys(NUM_KEYS, 0),
-    disp()
+    disp {},
+    sound {},
+    buffer {}
 {
 	// Load in fontset into memory
 	for (unsigned int i = 0; i < NUM_FONTS; i++) {
@@ -36,20 +39,38 @@ chip8::chip8() :
 // Execute one cycle of cpu
 void chip8::executeCycle()
 {
+    static chrono::high_resolution_clock::time_point current = 
+        chrono::high_resolution_clock::now();
+    static chrono::high_resolution_clock::time_point oldSound = 
+        chrono::high_resolution_clock::now();
+    static chrono::high_resolution_clock::time_point oldTimer = 
+        chrono::high_resolution_clock::now();
 	opcode = (memory[pc] << 8u) | memory[pc + 1];
 
 	executeInsn(opcode);
     disp.update_disp();
 
+    current = chrono::high_resolution_clock::now();
 	if (dt > 0) {
-		dt--;
+        chrono::duration<double, std::micro> time_span = current - oldTimer;
+
+        if (time_span.count() > 16666) {
+		    dt--;
+            oldTimer = current;
+        }
 	}
 
 	if (st > 0) {
-		if (st == 1) {
-			// TODO: Do something with sound
-		}
-		st--;
+        sound.play();
+        if (st == 1) {
+            sound.stop();
+        }
+        chrono::duration<double, std::micro> time_span = current - oldSound;
+
+        if (time_span.count() > 16666) {
+		    st--;
+            oldSound = current;
+        }
 	}
 }
 
@@ -207,7 +228,18 @@ void chip8::readRom(const std::string &filename)
 		for (unsigned int i = 0; i < buff.size(); i++) {
 			memory[START_PC + i] = buff[i];
 		}
-	}
+	} else {
+        throw std::runtime_error("Could not open ROM file");
+    }
+}
+
+void chip8::readSound(const std::string &filename) {
+    if (!buffer.loadFromFile(filename)) {
+        throw std::runtime_error("Could not open sound file");
+    }
+
+    sound.setBuffer(buffer);
+    sound.setLoop(true);
 }
 
 // The following instructions are implemented based off technical reference: 

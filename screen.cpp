@@ -95,21 +95,20 @@ void screen::update_disp() {
 
 void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
                   unsigned int n, unsigned char & vf) {
+    bool vf_bool = false;
     for (unsigned int y = vy; y < vy + n; y++) {
         auto row = s.get_row(y - vy);
-        /*
-        for (bool i : row) {
-             cout << i;
-        }
-        cout << endl;
-        */
         for (unsigned int x = vx; x < (vx + 8u); x++) {
             bool temp = display[y][x];
-            // cout << "(" << x << ", " << y << ") = " << (int) row[x-vx] << endl;
             display[y][x] = display[y][x] ^ row[x - vx];
-            vf &= (temp != display[y][x]);
+            vf_bool = vf_bool || (temp == true && display[y][x] == false);
         }
     }
-    //cout << endl;
+
+    if (vf_bool) {
+        vf = 1;
+    } else {
+        vf = 0;
+    }
 }
 

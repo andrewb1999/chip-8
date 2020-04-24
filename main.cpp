@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
 	chip8 processor;
 
-    processor.readRom("./games/PONG");
+    processor.readRom("./games/BRIX");
     processor.readSound("./beep.wav");
 
     while (true) {

@@ -469,17 +469,9 @@ void chip8::drw()
     
     auto begin = memory.begin() + I;
     auto end = begin + n + 1;
-    /*
-    for (auto i = begin; i != end; ++i) {
-        bitset<8> test(*i);
-        cout << test << endl;
-    }
-    */
-    //cout << endl;
-    sprite s {begin, end};
-    //cout << "vx = " << (int) v[vx] << " vy = " << (int) v[vy] << " n = " << n << endl;
-	disp.draw(s, v[vx], v[vy], n, v[15]);
 
+    sprite s {begin, end};
+	disp.draw(s, v[vx], v[vy], n, v[15]);
 	pc += 2;
 }
 

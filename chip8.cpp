@@ -74,6 +74,114 @@ void chip8::executeCycle()
 	}
 }
 
+// Update input
+bool chip8::pollInput()
+{
+	bool end = false;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		end = true;
+	} 
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)) {
+		keys[0x0] = 1;
+	} else {
+		keys[0x0] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+		keys[0x1] = 1;
+	} else {
+		keys[0x1] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+		keys[0x2] = 1;
+	} else {
+		keys[0x2] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+		keys[0x3] = 1;
+	} else {
+		keys[0x3] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+		keys[0x4] = 1;
+	} else {
+		keys[0x4] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		keys[0x5] = 1;
+	} else {
+		keys[0x5] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+		keys[0x6] = 1;
+	} else {
+		keys[0x6] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		keys[0x7] = 1;
+	} else {
+		keys[0x7] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		keys[0x8] = 1;
+	} else {
+		keys[0x8] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		keys[0x9] = 1;
+	} else {
+		keys[0x9] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+		keys[0xA] = 1;
+	} else {
+		keys[0xA] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+		keys[0xB] = 1;
+	} else {
+		keys[0xB] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
+		keys[0xC] = 1;
+	} else {
+		keys[0xC] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+		keys[0xD] = 1;
+	} else {
+		keys[0xD] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+		keys[0xE] = 1;
+	} else {
+		keys[0xE] = 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+		keys[0xF] = 1;
+	} else {
+		keys[0xF] = 0;
+	}
+
+	return end;
+}
+
 // Execute insn
 void chip8::executeInsn(unsigned short opcode)
 {

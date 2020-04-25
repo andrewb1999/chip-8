@@ -79,6 +79,9 @@ public:
 	// Execute one cycle of cpu
 	void executeCycle();
 
+	// Update input
+	bool pollInput();
+
 	// Execute insn
 	void executeInsn(unsigned short);
 

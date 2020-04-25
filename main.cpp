@@ -12,7 +12,10 @@ int main(int argc, char *argv[])
     processor.readRom("./games/BRIX");
     processor.readSound("./beep.wav");
 
-    while (true) {
+    bool end = false;
+
+    while (!end) {
+    	end = processor.pollInput();
         chrono::high_resolution_clock::time_point before = chrono::high_resolution_clock::now();
         processor.executeCycle();
         chrono::high_resolution_clock::time_point after = chrono::high_resolution_clock::now();

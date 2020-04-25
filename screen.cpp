@@ -81,24 +81,29 @@ void screen::update_disp() {
     window.clear();
     window.draw(sprite);
     window.display();
-/*
-    for (auto &v : display) {   
-        for (bool i : v) {
-                cout << i;
-        }
-        cout << endl;
-    }
-    */
-//    cout << endl;
     
 }
 
 void screen::draw(sprite & s, unsigned char vx, unsigned char vy,
                   unsigned int n, unsigned char & vf) {
+    
+    if ((unsigned int) vx >= x_size || (unsigned int)vx < 0 || 
+         (unsigned int) vy >= y_size || (unsigned int) vy < 0) {
+        vf = 0;
+        return;
+    }
+
     bool vf_bool = false;
+    
+
     for (unsigned int y = vy; y < vy + n; y++) {
         auto row = s.get_row(y - vy);
         for (unsigned int x = vx; x < (vx + 8u); x++) {
+            if ( 
+                 (unsigned int) y >= y_size || (unsigned int) y < 0) {
+                vf = 0;
+                return;
+            }
             bool temp = display[y][x];
             display[y][x] = display[y][x] ^ row[x - vx];
             vf_bool = vf_bool || (temp == true && display[y][x] == false);

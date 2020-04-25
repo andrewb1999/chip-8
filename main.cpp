@@ -1,15 +1,27 @@
 #include "chip8.hpp"
 #include <chrono>
+#include <stdexcept>
 #include <thread>
+#include <iostream>
 
 using namespace std;
 
 // Outer emulation loop
 int main(int argc, char *argv[])
 {
-	chip8 processor;
+    if (argc != 2) {
+        cout << "Please include ROM file" << endl;
+        return 1;
+    }
 
-    processor.readRom("./games/BRIX");
+	chip8 processor;
+    
+    try {
+        processor.readRom(argv[1]);
+    } catch (const std::runtime_error& e) {
+        cerr << e.what() << endl;
+        return 1;
+    }
     processor.readSound("./beep.wav");
 
     bool end = false;

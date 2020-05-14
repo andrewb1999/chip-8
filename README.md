@@ -1,5 +1,5 @@
-# project-cis190_andrew_jonathan
-CHIP8 Emulator Using SFML For Graphics
+# C++ CHIP8 Emulator
+CHIP8 emulator using SFML for graphics, audio, and input
 
 Requires installing sfml
 
